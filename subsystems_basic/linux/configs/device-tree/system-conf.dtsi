@@ -9,14 +9,14 @@
 /include/ "pl.dtsi"
 
 / {
-	model = "zc706_petalnx_20154";
+	model = "vux_zc706";
 	aliases {
 		serial0 = &uart1;
 		ethernet0 = &gem0;
 		spi0 = &qspi;
 	};
 	chosen {
-		bootargs = "console=ttyPS0,115200 earlyprintk";
+		bootargs = "console=ttyPS0,115200 earlyprintk root=mtd:jffs2 rw rootfstype=jffs2";
 	};
 	memory {
 		device_type = "memory";
@@ -39,19 +39,19 @@
 		spi-max-frequency = <50000000>;
 		partition@0x00000000 {
 			label = "boot";
-			reg = <0x00000000 0x00500000>;
+			reg = <0x00000000 0x00f00000>;
 		};
-		partition@0x00500000 {
+		partition@0x00f00000 {
 			label = "bootenv";
-			reg = <0x00500000 0x00020000>;
+			reg = <0x00f00000 0x00020000>;
 		};
-		partition@0x00520000 {
+		partition@0x00f20000 {
 			label = "kernel";
-			reg = <0x00520000 0x00a80000>;
+			reg = <0x00f20000 0x00400000>;
 		};
-		partition@0x00fa0000 {
-			label = "spare";
-			reg = <0x00fa0000 0x00000000>;
+		partition@0x01320000 {
+			label = "jffs2";
+			reg = <0x01320000 0x00800000>;
 		};
 	};
 };
