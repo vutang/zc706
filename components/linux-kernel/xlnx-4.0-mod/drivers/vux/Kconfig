@@ -1,0 +1,19 @@
+
+menu "VUX Dev Zone"
+
+config VUX
+	bool "VUX Dev Zone"
+	default y
+	help
+		VUX Development zone
+
+if VUX
+
+config SFP
+	tristate "SFP"
+	help
+		Driver for SFP+
+
+endif
+
+endmenu

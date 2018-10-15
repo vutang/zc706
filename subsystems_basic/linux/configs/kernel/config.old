@@ -3398,6 +3398,12 @@ CONFIG_RAS=y
 # CONFIG_ANDROID is not set
 
 #
+# VUX Dev Zone
+#
+CONFIG_VUX=y
+CONFIG_SFP=m
+
+#
 # File systems
 #
 CONFIG_DCACHE_WORD_ACCESS=y

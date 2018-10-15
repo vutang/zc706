@@ -1,0 +1,1 @@
+obj-m		        += vux_sfp.o

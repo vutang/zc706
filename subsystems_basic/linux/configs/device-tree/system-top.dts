@@ -17,6 +17,19 @@
 		#size-cells = <0>;
 		compatible = "nxp,pca9548";
 		reg = <0x74>;
+		i2c@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			sfp{
+				compatible = "vux_sfp";
+				reg = <0x50>;
+			};
+			sfp{
+				compatible = "vux_sfp";
+				reg = <0x51>;
+			};
+		};
 		i2c@2 {
 			reg = <2>;
 			#address-cells = <1>;
