@@ -11,11 +11,20 @@
 
 &i2c0 {
 	clock-frequency = <400000>;
-    status = "okay";
-    mux@74 {
-    	#address-cells = <1>;
-        #size-cells = <0>;
-        compatible = "nxp,pca9548";
-        reg = <0x74>;
-    };
+	status = "okay";
+	mux@74 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "nxp,pca9548";
+		reg = <0x74>;
+		i2c@2 {
+			reg = <2>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			eeprom{
+				compatible = "at,24c08";
+				reg = <0x50>;
+			};
+		};
+	};
 };
