@@ -21,12 +21,12 @@
 			reg = <0>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-			sfp{
-				compatible = "vux_sfp";
+			sfp_eeprom_01{
+				compatible = "vux_sfp_0";
 				reg = <0x50>;
 			};
-			sfp{
-				compatible = "vux_sfp";
+			sfp_eeprom_02{
+				compatible = "vux_sfp_1";
 				reg = <0x51>;
 			};
 		};
