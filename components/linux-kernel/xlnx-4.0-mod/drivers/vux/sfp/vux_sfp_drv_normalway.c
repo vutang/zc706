@@ -2,7 +2,7 @@
 * @Author: vutang
 * @Date:   2018-10-15 17:50:54
 * @Last Modified by:   vutang
-* @Last Modified time: 2018-10-18 11:39:46
+* @Last Modified time: 2018-10-18 09:15:31
 */
 
 #include <linux/kernel.h>
@@ -12,33 +12,56 @@
 #include <linux/slab.h>
 
 #include <linux/io.h>
+
 /*For i2c_client*/
 #include <linux/i2c.h>
 
-#include "vux_sfp_core.h"
 #include "vux_sfp.h"
 
-static int sfp_probe(struct i2c_client *client, const struct i2c_device_id *id) {
-	int ret;
-	sfp_drvdata_t *p_sfp_drvdata = (sfp_drvdata_t *) NULL;
+struct sfp_drvdata {
+	struct i2c_client *client;	
+};
 
+static int sfp_probe(struct i2c_client *client,
+			 const struct i2c_device_id *id) {
 	dev_info(&client->dev, "Probing i2c device 0x%x...\n", client->addr);
+	
+	struct sfp_drvdata *p_sfp_drvdata = (struct sfp_drvdata *) NULL;
+	/*Got device from i2c_client*/
+	struct device *dev = &client->dev;
+
+	vux_sfp_dev_t *p_vux_sfp_dev;
+
+	int ret;
+	u8 vendor_part_number[21];
 
 	/*Allocate driver data*/
-	p_sfp_drvdata = (sfp_drvdata_t *) kmalloc(sizeof(struct sfp_drvdata), GFP_KERNEL);
+	p_sfp_drvdata = (struct sfp_drvdata *) kmalloc(sizeof(struct sfp_drvdata), GFP_KERNEL);
 	if (!p_sfp_drvdata) {
 		dev_err(&client->dev, "Could not allocate driver data");
 		goto err_alloc_sfp_drvdata;
 	}
 
-	/*Add device to system, a character device file will be created*/
-	sfp_add_device(p_sfp_drvdata);
+	/*Set driver data*/
+	dev_set_drvdata(dev, p_sfp_drvdata);
+
+	/*Got id device from i2c_device_id table*/
+	p_vux_sfp_dev->id = id->driver_data;
+
+	/*Register device*/
+
 	return 0;
+
+err_alloc_vux_dev:
+	kfree(p_sfp_drvdata);
 err_alloc_sfp_drvdata:
 	return -1;
 }
 
 int sfp_remove(struct i2c_client *client) {
+	/*dev_get_drvdata & dev_set_drvdata are function defined in linux/device.h*/
+	struct sfp_drvdata *p = dev_get_drvdata(&client->dev);
+	kfree(p);
 }
 
 /*Define in mod_devicetable.h, include: name & driver_data*/
