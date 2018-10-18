@@ -1,0 +1,17 @@
+2399184340
+notsent
+
+command_total_run_petalinux-util=1
+command_failures_petalinux-util=0
+command_option_petalinux-util=--find-hdf-bitstream
+command_option_petalinux-util=--hdf-file
+command_option_value_petalinux-util=<USER_DEFINED>
+command_total_run_petalinux-build=11
+command_failures_petalinux-build=4
+command_option_petalinux-build=-c
+command_option_value_petalinux-build=<USER_DEFINED>
+command_total_run_petalinux-build=11
+command_failures_petalinux-build=4
+command_option_petalinux-build=-c
+command_option_value_petalinux-build=<USER_DEFINED>
+
