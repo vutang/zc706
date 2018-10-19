@@ -2,7 +2,7 @@
 * @Author: vutang
 * @Date:   2018-10-15 17:50:54
 * @Last Modified by:   vutang
-* @Last Modified time: 2018-10-18 11:39:46
+* @Last Modified time: 2018-10-19 11:54:20
 */
 
 #include <linux/kernel.h>
@@ -31,6 +31,9 @@ static int sfp_probe(struct i2c_client *client, const struct i2c_device_id *id) 
 		goto err_alloc_sfp_drvdata;
 	}
 
+	p_sfp_drvdata->client = client;
+	p_sfp_drvdata->id = id->driver_data;
+	
 	/*Add device to system, a character device file will be created*/
 	sfp_add_device(p_sfp_drvdata);
 	return 0;
@@ -39,6 +42,9 @@ err_alloc_sfp_drvdata:
 }
 
 int sfp_remove(struct i2c_client *client) {
+	struct sfp_drvdata *p = dev_get_drvdata(&client->dev);
+	kfree(p);
+	return 0;
 }
 
 /*Define in mod_devicetable.h, include: name & driver_data*/
