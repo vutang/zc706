@@ -2,7 +2,7 @@
 * @Author: vutang
 * @Date:   2018-10-16 08:15:15
 * @Last Modified by:   vutang
-* @Last Modified time: 2018-10-19 17:36:06
+* @Last Modified time: 2018-10-19 18:04:59
 */
 
 #include <linux/cdev.h>
@@ -73,10 +73,26 @@ const static struct file_operations sfp_fops = {
 	.unlocked_ioctl = sfpdev_ioctl,
 };
 
+/*For test SYSFS Device Attributes
+https://www.kernel.org/doc/Documentation/filesystems/sysfs.txt
+*/
+static ssize_t sfpdev_show_vendor(struct device *dev, struct device_attribute *attr,
+			char *buf) {
+	int ret;
+	ret = sprintf(buf, "ViettelSFP%d", MINOR(dev->devt));
+	return ret;
+}
+
+/*Permision bit
+https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html
+*/
+static DEVICE_ATTR(vendor, S_IRUGO, sfpdev_show_vendor, NULL);
+
 /*Create Device and File Device*/
 static int sfpdev_create_device(sfp_drvdata_t *sfp_drvdata) {
 	struct device *dev;
 	int id = sfp_drvdata->id;
+	int ret;
 	/*Make Major/Minor number*/
 	sfpdev_priv->dev[id] = MKDEV(SFP_MAJOR, id);
 
@@ -98,6 +114,10 @@ static int sfpdev_create_device(sfp_drvdata_t *sfp_drvdata) {
 	}
 	
 	printk("Create dev: %s\n", dev_name(dev));
+
+	ret = device_create_file(dev, &dev_attr_vendor);
+	if (ret < 0) 
+		printk("failed to create write /sys endpoint - continuing without\n");
 
 	/*Add Char Dev to system*/
 	cdev_init(&sfpdev_priv->cdev[id], &sfp_fops);
