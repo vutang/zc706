@@ -4,3 +4,5 @@ images/
 *.o
 *.jou
 *.log
+subsystems
+.petalinux
