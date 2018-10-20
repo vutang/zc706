@@ -2,7 +2,7 @@
 * @Author: vutang
 * @Date:   2018-10-16 08:15:15
 * @Last Modified by:   vutang
-* @Last Modified time: 2018-10-20 11:46:13
+* @Last Modified time: 2018-10-20 14:37:53
 */
 
 #include <linux/cdev.h>
@@ -14,6 +14,7 @@
 
 #include <linux/slab.h>
 #include <linux/debugfs.h>
+#include <linux/i2c.h>
 
 #include "vux_sfp_core.h"
 
@@ -93,6 +94,44 @@ https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html
 */
 static DEVICE_ATTR(vendor, S_IRUGO, sfpdev_show_vendor, NULL);
 
+static ssize_t sfpdev_show_temp(struct device *dev, struct device_attribute *attr,
+			char *buf) {
+	int ret;
+	int temperature;
+	unsigned char tmp[2];
+	sfp_drvdata_t *drvdata;
+	drvdata = sfpdev_priv->sfpdev_drvdata_list[MINOR(dev->devt)];
+	if (!drvdata) {
+		printk("Get drvdata failed\n");
+		goto ret_error;
+	}
+
+	/*Read MSB Temperature*/
+	tmp[1] = i2c_smbus_read_byte_data(drvdata->client, 96);
+	if (tmp[1] < 0) {
+		printk("Read MSB Temperature failed\n");
+		goto ret_error;
+	}
+	/*Read LSB Temperature*/
+	tmp[0] = i2c_smbus_read_byte_data(drvdata->client, 97);
+	if (tmp[0] < 0) {
+		printk("Read LSB Temperature failed\n");
+		goto ret_error;
+	}
+
+	// temperature = (((int) tmp[1] * 256) + (int) tmp[0]) / 256;
+	printk("Temperature: %d.%02d\n", tmp[1], (int) tmp[0] * 100 / 256);
+	ret = sprintf(buf, "%d %d", tmp[1], tmp[0]);
+	return ret;
+
+ret_error:
+	temperature = -1;
+	ret = sprintf(buf, "%d", -1);	
+	return ret;
+}
+static DEVICE_ATTR(temperature, S_IRUGO, sfpdev_show_temp, NULL);
+
+
 /*For Debugfs*/
 static int  sfpdev_debugfs_open (struct inode *inode, struct file *file) {
 	printk("Open sfpdev_debugfs file\n");
@@ -131,9 +170,17 @@ static int sfpdev_create_device(sfp_drvdata_t *sfp_drvdata) {
 	printk("device_create dev: %s\n", dev_name(dev));
 
 	/*create Sysfs file*/
-	ret = device_create_file(dev, &dev_attr_vendor);
-	if (ret < 0) 
-		printk("failed to create write /sys endpoint - continuing without\n");
+	if (id == 0) {
+		ret = device_create_file(dev, &dev_attr_vendor);
+		if (ret < 0) 
+			printk("failed to create write /sys endpoint - continuing without\n");
+	}
+
+	if (id == 1) {
+		ret = device_create_file(dev, &dev_attr_temperature);
+		if (ret < 0) 
+			printk("failed to create write /sys endpoint - continuing without\n");
+	}
 
 	/*create debugfs file*/
 	if (dir) {
@@ -190,7 +237,7 @@ static int __init sfpdev_init(void){
 	}
 
 	/*Define at linux/device.h, register a class of device driver*/
-	if ((sfpdev_priv->cl = class_create(THIS_MODULE, "chardrv")) == NULL) {
+	if ((sfpdev_priv->cl = class_create(THIS_MODULE, "sfp_chardrv")) == NULL) {
 		printk("class_create fail");
 		return -1;
 	}
