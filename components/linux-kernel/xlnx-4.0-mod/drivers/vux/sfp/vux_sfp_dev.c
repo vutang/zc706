@@ -2,7 +2,7 @@
 * @Author: vutang
 * @Date:   2018-10-16 08:15:15
 * @Last Modified by:   vutang
-* @Last Modified time: 2018-10-19 18:04:59
+* @Last Modified time: 2018-10-20 11:46:13
 */
 
 #include <linux/cdev.h>
@@ -13,6 +13,8 @@
 #include <linux/notifier.h>
 
 #include <linux/slab.h>
+#include <linux/debugfs.h>
+
 #include "vux_sfp_core.h"
 
 #define SFP_MAJOR 		384
@@ -33,6 +35,9 @@ typedef struct{
 } sfpdev_priv_t;
 
 sfpdev_priv_t *sfpdev_priv;
+
+/*Debug file dir*/
+static struct dentry *dir = 0;
 
 static int sfpdev_open(struct inode *inode, struct file *file) {
 	unsigned int minor = iminor(inode);
@@ -88,6 +93,17 @@ https://www.gnu.org/software/libc/manual/html_node/Permission-Bits.html
 */
 static DEVICE_ATTR(vendor, S_IRUGO, sfpdev_show_vendor, NULL);
 
+/*For Debugfs*/
+static int  sfpdev_debugfs_open (struct inode *inode, struct file *file) {
+	printk("Open sfpdev_debugfs file\n");
+	return 0;
+}
+static const struct file_operations sfpdev_debugfs_fops = {
+	.open = sfpdev_debugfs_open,
+	.owner = THIS_MODULE,
+};
+
+
 /*Create Device and File Device*/
 static int sfpdev_create_device(sfp_drvdata_t *sfp_drvdata) {
 	struct device *dev;
@@ -112,12 +128,19 @@ static int sfpdev_create_device(sfp_drvdata_t *sfp_drvdata) {
 		printk("device_create fail");
 		return -1;
 	}
-	
-	printk("Create dev: %s\n", dev_name(dev));
+	printk("device_create dev: %s\n", dev_name(dev));
 
+	/*create Sysfs file*/
 	ret = device_create_file(dev, &dev_attr_vendor);
 	if (ret < 0) 
 		printk("failed to create write /sys endpoint - continuing without\n");
+
+	/*create debugfs file*/
+	if (dir) {
+		printk("Create debugfs file\n");
+		/*An file named sfpdev_debugfs is create in dir*/
+		debugfs_create_file("sfpdev_debugfs", S_IRUGO, dir, NULL, &sfpdev_debugfs_fops);
+	}
 
 	/*Add Char Dev to system*/
 	cdev_init(&sfpdev_priv->cdev[id], &sfp_fops);
@@ -174,6 +197,14 @@ static int __init sfpdev_init(void){
 
 	/*Register notifier*/
 	sfp_register_notify(&sfpdev_notifier_nb);
+
+	/*Create debug dentry*/
+	/*CONFIG_DEBUG_FS in kernel configuration have to set to "y"
+	This function will create a dir in /sys/kernel/debug/ named "sfpdev"
+	*/
+	dir = debugfs_create_dir("sfpdev", 0);
+	if (!dir) 
+		printk("failed to create debug dir\n");
 	return 0;
 }
 
@@ -190,6 +221,8 @@ static void __exit sfpdev_exit(void){
 		}
 	}
 
+	if (dir)
+		debugfs_remove_recursive(dir);
 	unregister_chrdev_region(MKDEV(SFP_MAJOR, 0), SFP_MAX_MINORS);
 	kfree(sfpdev_priv);
 }
