@@ -2,6 +2,7 @@
 build/
 images/
 components/bootloader
+!components/bootloader_*
 *.o
 *.jou
 *.log
