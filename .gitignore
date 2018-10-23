@@ -1,8 +1,9 @@
 */config.old
 build/
 images/
+components/bootloader
 *.o
 *.jou
 *.log
 subsystems
-.petalinux
+.petalinux/
