@@ -20,47 +20,6 @@
 
 /******************************************************************/
 
-/* Definitions for driver BRAM */
-#define XPAR_XBRAM_NUM_INSTANCES 1
-
-/* Definitions for peripheral AXI_BRAM_CTRL_0 */
-#define XPAR_AXI_BRAM_CTRL_0_DEVICE_ID 0
-#define XPAR_AXI_BRAM_CTRL_0_DATA_WIDTH 32
-#define XPAR_AXI_BRAM_CTRL_0_ECC 0
-#define XPAR_AXI_BRAM_CTRL_0_FAULT_INJECT 0
-#define XPAR_AXI_BRAM_CTRL_0_CE_FAILING_REGISTERS 0
-#define XPAR_AXI_BRAM_CTRL_0_UE_FAILING_REGISTERS 0
-#define XPAR_AXI_BRAM_CTRL_0_ECC_STATUS_REGISTERS 0
-#define XPAR_AXI_BRAM_CTRL_0_CE_COUNTER_WIDTH 0
-#define XPAR_AXI_BRAM_CTRL_0_ECC_ONOFF_REGISTER 0
-#define XPAR_AXI_BRAM_CTRL_0_ECC_ONOFF_RESET_VALUE 0
-#define XPAR_AXI_BRAM_CTRL_0_WRITE_ACCESS 0
-#define XPAR_AXI_BRAM_CTRL_0_S_AXI_BASEADDR 0x40000000
-#define XPAR_AXI_BRAM_CTRL_0_S_AXI_HIGHADDR 0x40001FFF
-#define XPAR_AXI_BRAM_CTRL_0_S_AXI_CTRL_BASEADDR 0xFFFFFFFF 
-#define XPAR_AXI_BRAM_CTRL_0_S_AXI_CTRL_HIGHADDR 0xFFFFFFFF 
-
-
-/******************************************************************/
-
-/* Canonical definitions for peripheral AXI_BRAM_CTRL_0 */
-#define XPAR_BRAM_0_DEVICE_ID XPAR_AXI_BRAM_CTRL_0_DEVICE_ID
-#define XPAR_BRAM_0_DATA_WIDTH 32
-#define XPAR_BRAM_0_ECC 0
-#define XPAR_BRAM_0_FAULT_INJECT 0
-#define XPAR_BRAM_0_CE_FAILING_REGISTERS 0
-#define XPAR_BRAM_0_UE_FAILING_REGISTERS 0
-#define XPAR_BRAM_0_ECC_STATUS_REGISTERS 0
-#define XPAR_BRAM_0_CE_COUNTER_WIDTH 0
-#define XPAR_BRAM_0_ECC_ONOFF_REGISTER 0
-#define XPAR_BRAM_0_ECC_ONOFF_RESET_VALUE 0
-#define XPAR_BRAM_0_WRITE_ACCESS 0
-#define XPAR_BRAM_0_BASEADDR 0x40000000
-#define XPAR_BRAM_0_HIGHADDR 0x40001FFF
-
-
-/******************************************************************/
-
 
 /* Definitions for peripheral PS7_DDR_0 */
 #define XPAR_PS7_DDR_0_S_AXI_BASEADDR 0x00100000
@@ -119,7 +78,7 @@
 /******************************************************************/
 
 /* Definitions for driver EMACPS */
-#define XPAR_XEMACPS_NUM_INSTANCES 1
+#define XPAR_XEMACPS_NUM_INSTANCES 2
 
 /* Definitions for peripheral PS7_ETHERNET_0 */
 #define XPAR_PS7_ETHERNET_0_DEVICE_ID 0
@@ -132,6 +91,19 @@
 #define XPAR_PS7_ETHERNET_0_ENET_SLCR_100MBPS_DIV1 5
 #define XPAR_PS7_ETHERNET_0_ENET_SLCR_10MBPS_DIV0 8
 #define XPAR_PS7_ETHERNET_0_ENET_SLCR_10MBPS_DIV1 50
+
+
+/* Definitions for peripheral PS7_ETHERNET_1 */
+#define XPAR_PS7_ETHERNET_1_DEVICE_ID 1
+#define XPAR_PS7_ETHERNET_1_BASEADDR 0xE000C000
+#define XPAR_PS7_ETHERNET_1_HIGHADDR 0xE000CFFF
+#define XPAR_PS7_ETHERNET_1_ENET_CLK_FREQ_HZ 125000000
+#define XPAR_PS7_ETHERNET_1_ENET_SLCR_1000MBPS_DIV0 1
+#define XPAR_PS7_ETHERNET_1_ENET_SLCR_1000MBPS_DIV1 1
+#define XPAR_PS7_ETHERNET_1_ENET_SLCR_100MBPS_DIV0 1
+#define XPAR_PS7_ETHERNET_1_ENET_SLCR_100MBPS_DIV1 5
+#define XPAR_PS7_ETHERNET_1_ENET_SLCR_10MBPS_DIV0 1
+#define XPAR_PS7_ETHERNET_1_ENET_SLCR_10MBPS_DIV1 50
 
 
 /******************************************************************/
@@ -148,13 +120,26 @@
 #define XPAR_XEMACPS_0_ENET_SLCR_10Mbps_DIV0 8
 #define XPAR_XEMACPS_0_ENET_SLCR_10Mbps_DIV1 50
 
+/* Canonical definitions for peripheral PS7_ETHERNET_1 */
+#define XPAR_XEMACPS_1_DEVICE_ID XPAR_PS7_ETHERNET_1_DEVICE_ID
+#define XPAR_XEMACPS_1_BASEADDR 0xE000C000
+#define XPAR_XEMACPS_1_HIGHADDR 0xE000CFFF
+#define XPAR_XEMACPS_1_ENET_CLK_FREQ_HZ 125000000
+#define XPAR_XEMACPS_1_ENET_SLCR_1000Mbps_DIV0 1
+#define XPAR_XEMACPS_1_ENET_SLCR_1000Mbps_DIV1 1
+#define XPAR_XEMACPS_1_ENET_SLCR_100Mbps_DIV0 1
+#define XPAR_XEMACPS_1_ENET_SLCR_100Mbps_DIV1 5
+#define XPAR_XEMACPS_1_ENET_SLCR_10Mbps_DIV0 1
+#define XPAR_XEMACPS_1_ENET_SLCR_10Mbps_DIV1 50
+
 
 /******************************************************************/
 
+/* Definitions related to PCS PMA PL IP*/
+#define XPAR_GIGE_PCS_PMA_1000BASEX_CORE_PRESENT 1
+#define XPAR_PCSPMA_1000BASEX_PHYADDR 6
 
-/* Definitions for peripheral LED_CONTROLLER_V1_0_0 */
-#define XPAR_LED_CONTROLLER_V1_0_0_BASEADDR 0x83C00000
-#define XPAR_LED_CONTROLLER_V1_0_0_HIGHADDR 0x83C00FFF
+/******************************************************************/
 
 
 /* Definitions for peripheral PS7_AFI_0 */
