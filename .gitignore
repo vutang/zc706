@@ -7,3 +7,4 @@ components/bootloader
 *.log
 subsystems
 .petalinux/
+output.bif
