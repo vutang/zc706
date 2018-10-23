@@ -1,0 +1,24 @@
+/dts-v1/;
+/include/ "system-conf.dtsi"
+/ {
+};
+
+&qspi {
+	flash0: flash@0  {
+		compatible = "micron,n25q128a13";
+	};
+};
+
+&gem1 {
+	status = "okay";
+	local-mac-address = [00 0a 35 00 1e 54];
+	phy-mode = "rgmii-id";
+	phy-handle = <&phy1>;
+
+	phy1: phy@6 {
+		compatible = "Xilinx PCS/PMA PHY";
+		device_type = "ethernet-phy";
+		xlnx,phy-type = <5>;
+		reg = <6>;
+	};
+};
