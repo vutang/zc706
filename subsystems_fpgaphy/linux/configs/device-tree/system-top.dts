@@ -18,7 +18,7 @@
 	phy1: phy@6 {
 		compatible = "Xilinx PCS/PMA PHY";
 		device_type = "ethernet-phy";
-		xlnx,phy-type = <5>;
+		xlnx,phy-type = <0x5>;
 		reg = <6>;
 	};
 };
