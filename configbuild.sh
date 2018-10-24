@@ -15,6 +15,10 @@ while [ $# -ne 0 ]; do
 			HW_NAME="fpgaphy"
 			shift
 			;;
+		--fpgamac)
+			HW_NAME="fpgamac"
+			shift
+			;;
 		*)
 			exit 1
 			;;

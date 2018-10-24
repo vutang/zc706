@@ -1,0 +1,14 @@
+/dts-v1/;
+/include/ "system-conf.dtsi"
+/ {
+};
+
+&qspi {
+	flash0: flash@0  {
+		compatible = "micron,n25q128a13";
+	};
+};
+
+&axi_ethernet {
+	local-mac-address = [00 0a 35 00 1e 52];
+};
