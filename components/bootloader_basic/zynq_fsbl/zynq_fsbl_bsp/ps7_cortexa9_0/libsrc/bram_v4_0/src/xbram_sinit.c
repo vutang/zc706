@@ -29,70 +29,76 @@
 * this Software without prior written authorization from Xilinx.
 *
 ******************************************************************************/
+/*****************************************************************************/
 /**
-*
-* @file xaxiethernet_sinit.c
-* @addtogroup axiethernet_v5_0
+* @file xbram_sinit.c
+* @addtogroup bram_v4_0
 * @{
 *
-* This file contains static initialzation functionality for Axi Ethernet driver.
+* The implementation of the XBram driver's static initialzation
+* functionality.
+*
+* @note
+*
+* None
 *
 * <pre>
 * MODIFICATION HISTORY:
 *
 * Ver   Who  Date     Changes
-* ----- ---- -------- -------------------------------------------------------
-* 1.00a asa  6/30/10 First release
+* ----- ---- -------- -----------------------------------------------
+* 2.01a jvb  10/13/05 First release
+* 2.11a mta  03/21/07 Updated to new coding style
 * </pre>
 *
-******************************************************************************/
+*****************************************************************************/
 
-/***************************** Include Files *********************************/
+/***************************** Include Files ********************************/
 
+#include "xstatus.h"
 #include "xparameters.h"
-#include "xaxiethernet.h"
+#include "xbram.h"
 
-/************************** Constant Definitions *****************************/
+/************************** Constant Definitions ****************************/
 
+/**************************** Type Definitions ******************************/
 
-/**************************** Type Definitions *******************************/
+/***************** Macros (Inline Functions) Definitions ********************/
 
+/************************** Variable Definitions ****************************/
+extern XBram_Config XBram_ConfigTable[];
 
-/***************** Macros (Inline Functions) Definitions *********************/
+/************************** Function Prototypes *****************************/
 
-
-/************************** Function Prototypes ******************************/
 
 /*****************************************************************************/
 /**
-* XAxiEthernet_LookupConfig returns a reference to an XAxiEthernet_Config
-* structure based on an unique device id, <i>DeviceId</i>. The return value
-* will refer to an entry in the device configuration table defined in the
-* xaxiethernet_g.c file.
+* Lookup the device configuration based on the unique device ID.  The table
+* ConfigTable contains the configuration info for each device in the system.
 *
-* @param	DeviceId is the unique device ID of the device for the lookup
-*		operation.
+* @param	DeviceId is the device identifier to lookup.
 *
 * @return
-*		- Returns a reference to a config record in the
-*		  configuration table (in xaxiethernet_g.c) corresponding to
-*		  <i>DeviceId</i>, or NULL
-*		- NULL if no match is found.
+*		 - A pointer of data type XBram_Config which
+*		points to the device configuration if DeviceID is found.
+* 		- NULL if DeviceID is not found.
+*
+* @note		None.
 *
 ******************************************************************************/
-XAxiEthernet_Config *XAxiEthernet_LookupConfig(u16 DeviceId)
+XBram_Config *XBram_LookupConfig(u16 DeviceId)
 {
-	extern XAxiEthernet_Config XAxiEthernet_ConfigTable[];
-	XAxiEthernet_Config *CfgPtr = NULL;
+	XBram_Config *CfgPtr = NULL;
+
 	int Index;
 
-	for (Index = 0; Index < XPAR_XAXIETHERNET_NUM_INSTANCES; Index++) {
-		if (XAxiEthernet_ConfigTable[Index].DeviceId == DeviceId) {
-			CfgPtr = &XAxiEthernet_ConfigTable[Index];
+	for (Index = 0; Index < XPAR_XBRAM_NUM_INSTANCES; Index++) {
+		if (XBram_ConfigTable[Index].DeviceId == DeviceId) {
+			CfgPtr = &XBram_ConfigTable[Index];
 			break;
 		}
 	}
 
-	return (CfgPtr);
+	return CfgPtr;
 }
 /** @} */

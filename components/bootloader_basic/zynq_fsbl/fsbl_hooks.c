@@ -133,11 +133,6 @@ u32 FsblHookBeforeHandoff(void)
 
 	Status = XST_SUCCESS;
 
-	fsbl_printf(DEBUG_GENERAL,"ProgramSfpPhy \r\n");
-	ProgramSi5324();
-#if XPAR_GIGE_PCS_PMA_SGMII_CORE_PRESENT == 1
-	ProgramSfpPhy();
-#endif
 	/*
 	 * User logic to be added here.
 	 * Errors to be stored in the status variable and returned
