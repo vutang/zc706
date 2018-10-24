@@ -658,6 +658,8 @@ static int zynq_gpio_probe(struct platform_device *pdev)
 	struct gpio_chip *chip;
 	struct resource *res;
 	const struct of_device_id *match;
+	
+	dev_info(&pdev->dev, "ZYNQ GPIO probing...");
 
 	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
 	if (!gpio)
