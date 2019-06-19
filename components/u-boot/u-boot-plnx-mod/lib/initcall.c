@@ -4,6 +4,7 @@
  * SPDX-License-Identifier:	GPL-2.0+
  */
 
+#define DEBUG /*Vux: define to trace U-boot sequence*/
 #include <common.h>
 #include <initcall.h>
 
