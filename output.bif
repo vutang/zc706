@@ -1,6 +1,6 @@
 the_ROM_image:
 {
 [bootloader]/home/vutt6/Workspace/zynq/zc706/zc706_petalnx_20154/images/linux/zynq_fsbl.elf
-/home/vutt6/Workspace/zynq/zc706/zc706_petalnx_20154/subsystems/linux/hw-description/ps_emio_sfp.bit
+/home/vutt6/Workspace/zynq/zc706/zc706_petalnx_20154/subsystems/linux/hw-description/pl_eth_sfp.bit
 /home/vutt6/Workspace/zynq/zc706/zc706_petalnx_20154/images/linux/u-boot.elf
 }
